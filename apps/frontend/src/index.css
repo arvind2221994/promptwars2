@@ -1,0 +1,81 @@
+:root {
+  --color-primary: #FF9933; /* Saffron */
+  --color-secondary: #138808; /* Green */
+  --color-accent: #000080; /* Ashoka Chakra Blue */
+  --color-background: #FDFDFD;
+  --color-text: #333333;
+  --color-card-bg: #FFFFFF;
+  --color-card-shadow: rgba(0,0,0,0.1);
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --border-radius: 12px;
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Base Styles */
+h1, h2, h3 {
+  margin-top: 0;
+  color: var(--color-accent);
+}
+
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px var(--color-card-shadow);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  transition: transform 0.2s ease;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  background: var(--color-primary);
+  color: #FFF;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: var(--spacing-sm);
+  box-shadow: 0 2px 4px var(--color-card-shadow);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+}
+
+.icon {
+  font-size: 1.5rem;
+}
