@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Walkthrough from './Walkthrough'
 import LanguageSelector from './LanguageSelector'
+import PollingBoothLocator from './PollingBoothLocator'
+import Countdown from './Countdown'
 import { useLanguage } from './LanguageContext'
 import './index.css'
 
@@ -16,7 +18,7 @@ function App() {
     if (!navigator.onLine) setIsOffline(true);
 
     // Fetch from Backend API
-    fetch('http://localhost:5000/api/timeline')
+    fetch('/api/timeline')
       .then(res => res.json())
       .then(data => setTimeline(data.phases))
       .catch(err => {
@@ -40,37 +42,51 @@ function App() {
 
   return (
     <div className="app-container">
-      <header style={{ textAlign: 'center', marginBottom: '24px' }}>
+      <header style={{ textAlign: 'center', marginBottom: '32px' }}>
         <LanguageSelector />
-        <h1>{t.title}</h1>
-        <p>{t.subtitle}</p>
+        
+        <h1 style={{ fontSize: '2.5rem', marginBottom: '8px' }}>
+          <span style={{ color: 'var(--color-primary)' }}>IN</span> {t.title.replace('🇮🇳 ', '')}
+        </h1>
+        <p style={{ fontSize: '1.1rem', color: '#4a5568', margin: '0 0 24px 0' }}>{t.subtitle}</p>
+        
         <button 
           className="btn" 
           onClick={toggleReading}
-          style={{ background: isReading ? '#ffcccc' : '#f0f0f0', color: '#333', marginTop: '0' }}
+          style={{ 
+            background: isReading ? 'linear-gradient(135deg, #fc8181 0%, #e53e3e 100%)' : '#edf2f7', 
+            color: isReading ? '#fff' : '#2d3748', 
+            marginTop: '0',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+            border: '1px solid #e2e8f0'
+          }}
         >
-          {isReading ? t.stopReading : t.readToMe}
+          {isReading ? `🔇 ${t.stopReading.replace('🔇 ', '')}` : `🔊 ${t.readToMe.replace('🔊 ', '')}`}
         </button>
       </header>
 
       <main>
         {isOffline && (
-          <div style={{ background: '#ffcc00', padding: '8px', borderRadius: '4px', textAlign: 'center', marginBottom: '16px', color: '#333', fontWeight: 'bold' }}>
+          <div className="card" style={{ background: 'linear-gradient(135deg, #fefcbf 0%, #faf089 100%)', padding: '16px', textAlign: 'center', color: '#744210', fontWeight: 'bold' }}>
             ⚠️ Offline Mode: Showing saved data.
           </div>
         )}
 
+        <Countdown />
+
         <Walkthrough />
         
-        <div className="card" style={{ marginTop: '24px', background: '#eef8ff' }}>
-          <h3>{t.importantDates}</h3>
+        <PollingBoothLocator />
+        
+        <div className="card" style={{ background: 'linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%)', border: 'none' }}>
+          <h3 style={{ color: '#2b6cb0' }}>📅 {t.importantDates}</h3>
           {!timeline ? (
-            <p>Loading...</p>
+            <div style={{ textAlign: 'center', color: '#4a5568', padding: '20px' }}>Loading...</div>
           ) : (
-            <ul style={{ paddingLeft: '20px', margin: 0 }}>
+            <ul className="custom-list">
               <li>Phase 1: {timeline[0]?.date || 'April 10, 2026'}</li>
               <li>Phase 2: {timeline[1]?.date || 'April 18, 2026'}</li>
-              <li><strong>Results: {timeline[2]?.results || 'May 15, 2026'}</strong></li>
+              <li style={{ borderLeftColor: 'var(--color-primary)' }}><strong>Results: {timeline[2]?.results || 'May 15, 2026'}</strong></li>
             </ul>
           )}
         </div>

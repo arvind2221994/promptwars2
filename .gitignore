@@ -7,3 +7,4 @@ dist-ssr
 .DS_Store
 *.sw?
 .turbo/cache
+google-cloud-sdk/

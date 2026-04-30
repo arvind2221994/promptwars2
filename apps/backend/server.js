@@ -49,10 +49,10 @@ app.get('/api/health', (req, res) => {
 // 1. Timeline Endpoint
 app.get('/api/timeline', checkCache('timeline'), async (req, res) => {
   const { state } = req.query;
-  
+
   // MOCK: In production, this would make an axios call to ECI public data
   // const response = await axios.get(`https://api.eci.gov.in/timeline?state=${state}`);
-  
+
   const mockData = {
     state: state || 'national',
     phases: [
@@ -73,7 +73,7 @@ app.get('/api/timeline', checkCache('timeline'), async (req, res) => {
 // 2. Polling Booth Data (Location based)
 app.get('/api/polling-booth', checkCache('booth'), async (req, res) => {
   const { pincode } = req.query;
-  
+
   if (!pincode) return res.status(400).json({ error: 'Pincode is required' });
 
   const mockData = {
@@ -91,6 +91,17 @@ app.get('/api/polling-booth', checkCache('booth'), async (req, res) => {
   res.status(200).json(mockData);
 });
 
-app.listen(PORT, () => {
+const path = require('path');
+
+// 1. Serve the frontend files like images, css, and js
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// 2. If the URL doesn't start with /api, give them the React frontend!
+app.get(/(.*)/, (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
+
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`API Gateway server running on port ${PORT}`);
 });
